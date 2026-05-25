@@ -1,6 +1,6 @@
 public class TicTacToe {
 
-    public static int countXO(char[] l, char c){
+    private static int countXO(char[] l, char c){
         int maxInARow = 0;
         int countC = 0;
         for (char x: l){
@@ -17,13 +17,13 @@ public class TicTacToe {
         return maxInARow;
     };
 
-    public static boolean isFiveInARow(char[] l, char c){
+    private static boolean isFiveInARow(char[] l, char c){
         int countC = countXO(l, c);
 
         return (countC >= 5);
     }
     
-    public static void countMyArray(){
+    private static void countMyArray(){
 
         // Input parameters
         
