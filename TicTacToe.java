@@ -40,14 +40,39 @@ public class TicTacToe {
 
         @Override
         public String toString(){
-            String outEnd;
-            if (this.fiveInaRow){
-                outEnd = "with five in a row";
-            }
-            else {
-                outEnd = "with less than five in a row";
-            }
-            return "This is a " + m + "x" + n + " board-matrix " + outEnd;
+            
+            String finalOutput = "";
+            String rowString = "";
+            
+            finalOutput = "i/j";
+
+            for (int j = 0; j < this.n; j++){
+                finalOutput += " " + j;
+            };
+            finalOutput += "\n";
+
+            for (int i = 0; i < 5; i++){
+                
+                rowString = i + ": ";
+
+                for (int j = 0; j < 5; j++){
+                    if ( this.rows[i][j] != Character.MIN_VALUE){
+                        rowString += " " + this.rows[i][j];
+                    } else {
+                        rowString += " _";
+                    };
+                }
+
+                finalOutput += rowString + "\n";
+            };
+
+            if (this.fiveInaRow) {
+                finalOutput += "\nThis matrix has at least five in a row!";
+            } else {
+                finalOutput += "\nThis matrix does not have five in a row!";
+            };
+            
+            return finalOutput;
         };
 
         private static int countChar(char[] a, char c){
@@ -88,8 +113,6 @@ public class TicTacToe {
 
             while (!this.fiveInaRow && cubicArrayIter < cubicArray.length){
 
-                System.out.println("Checking five in a row...");
-
                 charArraysIter = 0;
                 charArrays = cubicArray[ cubicArrayIter ];
 
@@ -107,8 +130,6 @@ public class TicTacToe {
 
         public void enterChar (int i, int j, char c){
 
-            System.out.println("Entering " + c + " at [" + i + "][" + j + "]");
-
             this.rows[i][j] = c;
             this.cols[j][i] = c;
             this.diagsNeg[i + j][i] = c;
@@ -122,16 +143,16 @@ public class TicTacToe {
 
         BoardMatrix boardMatrix = new BoardMatrix(5, 5);
 
-        for (int j = 0; j < 5; j++){
-            boardMatrix.enterChar(0, j, 'X');
-        };
-
         for (int i = 0; i < 5; i++){
-            String rowString = i + ": ";
-            for (int j = 0; j < 5; j++){
-                rowString += boardMatrix.rows[i][j] + " ";
+
+            for (int j= 0; j < 5; j++){
+                if (i + (5-1-j) == 4) {
+                    boardMatrix.enterChar(i, j, 'X');
+                } else {
+                    boardMatrix.enterChar(i,j, '_');
+                }
+
             }
-            System.out.println( rowString );
         };
 
         System.out.println( boardMatrix );
