@@ -2,7 +2,6 @@ public class TicTacToe {
 
     private static class BoardMatrix{
 
-        private int m; // no rows in matrix
         private int n; // no columns in matrix
         private char[][] rows;
         private char[][] cols;
@@ -11,7 +10,6 @@ public class TicTacToe {
         private boolean fiveInaRow;
 
         public BoardMatrix(int m, int n) {
-            this.m = m;
             this.n = n;
             this.rows = new char[m][n];
             this.cols = new char[n][m];
