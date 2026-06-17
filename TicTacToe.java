@@ -7,7 +7,7 @@ public class TicTacToe {
         private char[][] cols;
         private char[][] diagsPos;
         private char[][] diagsNeg;
-        private boolean fiveInaRow;
+        private boolean fiveInARow;
 
         public BoardMatrix(int m, int n) {
             this.n = n;
@@ -15,7 +15,7 @@ public class TicTacToe {
             this.cols = new char[n][m];
             this.diagsPos = new char[m+n-1][];
             this.diagsNeg = new char[m+n-1][];
-            this.fiveInaRow = false;
+            this.fiveInARow = false;
 
             int maxDLength = Math.max(m,n);
 
@@ -64,12 +64,6 @@ public class TicTacToe {
                 finalOutput += rowString + "\n";
             };
 
-            if (this.fiveInaRow) {
-                finalOutput += "\nThis matrix has at least five in a row!";
-            } else {
-                finalOutput += "\nThis matrix does not have five in a row!";
-            };
-            
             return finalOutput;
         };
 
@@ -109,16 +103,16 @@ public class TicTacToe {
             char[][] charArrays;
             char[] charArray;
 
-            while (!this.fiveInaRow && cubicArrayIter < cubicArray.length){
+            while (!this.fiveInARow && cubicArrayIter < cubicArray.length){
 
                 charArraysIter = 0;
                 charArrays = cubicArray[ cubicArrayIter ];
 
-                while (!this.fiveInaRow && charArraysIter < charArrays.length){
+                while (!this.fiveInARow && charArraysIter < charArrays.length){
                     
                     charArray = charArrays[ charArraysIter ];
                     
-                    this.fiveInaRow = isFiveInARow(charArray, c);
+                    this.fiveInARow = isFiveInARow(charArray, c);
 
                     charArraysIter++;
                 };
@@ -137,20 +131,80 @@ public class TicTacToe {
         };
     };
 
+    private static class Player{
+
+        private String name;
+        private char boardChar; // X or O
+        private BoardMatrix board;
+        private boolean theirTurn;
+
+        public Player(
+            String name,
+            char boardChar,
+            BoardMatrix board,
+            boolean theirTurn
+        ){
+            this.name = name;
+            this.boardChar = boardChar;
+            this.board = board;
+            this.theirTurn = theirTurn;
+        }
+            
+        public void play(int i, int j, Player opponent){
+
+            boolean gameOver = board.fiveInARow;
+            if (!gameOver) {
+                if (this.theirTurn && board.rows[i][j] == Character.MIN_VALUE) {
+                    board.enterChar(i, j, this.boardChar);
+
+                    this.theirTurn = false;
+
+                    if (board.fiveInARow) {
+                        System.out.println(this.name + " won the game!");
+                    } else {
+                        opponent.theirTurn = true;
+                    };
+
+
+                } else if (!this.theirTurn){
+                    System.out.println( "For gods sake, " + this.name + "! Wait for your turn!" );
+                } else if (board.rows[i][j] != Character.MIN_VALUE) {
+                    System.out.println( String.format("You have to pick an empty spot, %s. Please try again!", this.name ));
+                };
+            };
+
+        };
+    };
+            
     public static void main(String[] args){
 
         BoardMatrix boardMatrix = new BoardMatrix(5, 5);
 
-        for (int i = 0; i < 5; i++){
+        Player spiderman = new Player("Superman", 'X', boardMatrix, true);
+        Player batman = new Player("Batman", 'O', boardMatrix, false);
 
-            for (int j= 0; j < 5; j++){
-                if (i + (5-1-j) == 4) {
-                    boardMatrix.enterChar(i, j, 'X');
-                } else {
-                    boardMatrix.enterChar(i,j, '_');
-                }
+        spiderman.play(4,2, batman);
+        batman.play(4,1, spiderman);
 
-            }
+        spiderman.play(3,2, batman);
+        batman.play(4,1,spiderman);
+        batman.play(3,1,spiderman);
+
+        spiderman.play(2,2, batman);
+        batman.play(2,1,spiderman);
+
+        spiderman.play(1,2, batman);
+        batman.play(1,1,spiderman);
+        
+        // Sneaky batman
+        batman.play(0,0, spiderman);
+
+        if (!boardMatrix.fiveInARow){
+            spiderman.play(0,2, batman);
+        };
+
+        if (!boardMatrix.fiveInARow){
+            batman.play(0,1,spiderman);
         };
 
         System.out.println( boardMatrix );
