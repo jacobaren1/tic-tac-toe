@@ -1,5 +1,14 @@
+/**
+ * A simple TicTacToe game implementation with a nested board matrix and players.
+ *
+ * <p>This class contains the game entry point and the supporting nested classes
+ * for maintaining the board state and handling player moves.</p>
+ */
 public class TicTacToe {
 
+    /**
+     * Represents the board data structure for the TicTacToe game.
+     */
     private static class BoardMatrix{
 
         private int n; // no columns in matrix
@@ -9,6 +18,12 @@ public class TicTacToe {
         private char[][] diagsNeg;
         private boolean fiveInARow;
 
+        /**
+         * Creates a board matrix with the given number of rows and columns.
+         *
+         * @param m the number of rows
+         * @param n the number of columns
+         */
         public BoardMatrix(int m, int n) {
             this.n = n;
             this.rows = new char[m][n];
@@ -23,12 +38,12 @@ public class TicTacToe {
 
                 for (int j = 0; j < n; j++){
 
-                    // Diagnoals from bottom left to upper right
+                    // Diagonals from bottom left to upper right
                     this.diagsPos[i + j] = new char[
                         Math.min(i+j+1, maxDLength)
                     ];
 
-                    // Diagnoals from bottom right to upper left
+                    // Diagonals from bottom right to upper left
                     this.diagsNeg[i + (n-1-j)] = new char[
                         Math.min(i + (n-j), maxDLength)
                     ];
@@ -36,6 +51,11 @@ public class TicTacToe {
             };
         };
 
+        /**
+         * Returns a string representation of the board.
+         *
+         * @return the board as a formatted string
+         */
         @Override
         public String toString(){
             
@@ -67,6 +87,13 @@ public class TicTacToe {
             return finalOutput;
         };
 
+        /**
+         * Counts the longest consecutive run of the specified character.
+         *
+         * @param a the array to inspect
+         * @param c the character to count
+         * @return the maximum number of consecutive c values in the array
+         */
         private static int countChar(char[] a, char c){
             int maxInARow = 0;
             int charCount = 0;
@@ -84,11 +111,25 @@ public class TicTacToe {
             return maxInARow;
         };
 
+        /**
+         * Returns true when the array contains five or more consecutive occurrences
+         * of the specified character.
+         *
+         * @param l the array to inspect
+         * @param c the character to check
+         * @return true if five or more consecutive characters are found
+         */
         private static boolean isFiveInARow(char[] l, char c){
             int charCount = countChar(l, c);
             return (charCount >= 5);
         };
 
+        /**
+         * Updates the winning state when the specified character appears five in a row
+         * in any row, column, or diagonal.
+         *
+         * @param c the character to check for a winning run
+         */
         private void updateFiveInARow(char c){
 
             char[][][] cubicArray = {
@@ -120,6 +161,13 @@ public class TicTacToe {
             };
         };
 
+        /**
+         * Places a character on the board and updates the win state.
+         *
+         * @param i the row index
+         * @param j the column index
+         * @param c the character to place
+         */
         public void enterChar (int i, int j, char c){
 
             this.rows[i][j] = c;
@@ -131,6 +179,9 @@ public class TicTacToe {
         };
     };
 
+    /**
+     * Represents a player in the TicTacToe game.
+     */
     private static class Player{
 
         private String name;
@@ -138,6 +189,14 @@ public class TicTacToe {
         private BoardMatrix board;
         private boolean theirTurn;
 
+        /**
+         * Creates a new player.
+         *
+         * @param name the player's name
+         * @param boardChar the character the player places on the board
+         * @param board the shared game board
+         * @param theirTurn true when it is this player's turn
+         */
         public Player(
             String name,
             char boardChar,
@@ -150,6 +209,13 @@ public class TicTacToe {
             this.theirTurn = theirTurn;
         }
             
+        /**
+         * Attempts to play a move at the given coordinates.
+         *
+         * @param i the row index
+         * @param j the column index
+         * @param opponent the opposing player
+         */
         public void play(int i, int j, Player opponent){
 
             boolean gameOver = board.fiveInARow;
@@ -176,6 +242,11 @@ public class TicTacToe {
         };
     };
             
+    /**
+     * Starts the TicTacToe game.
+     *
+     * @param args optional command line arguments
+     */
     public static void main(String[] args){
 
         BoardMatrix boardMatrix = new BoardMatrix(5, 5);
