@@ -168,6 +168,8 @@ public class TicTacToe {
 
                 } else if (!this.theirTurn){
                     System.out.println( "For gods sake, " + this.name + "! Wait for your turn!" );
+                } else if (board.rows[i][j] != Character.MIN_VALUE) {
+                    System.out.println( String.format("You have to pick an empty spot, %s. Please try again!", this.name ));
                 };
             };
 
@@ -185,6 +187,7 @@ public class TicTacToe {
         batman.play(4,1, spiderman);
 
         spiderman.play(3,2, batman);
+        batman.play(4,1,spiderman);
         batman.play(3,1,spiderman);
 
         spiderman.play(2,2, batman);
