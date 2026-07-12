@@ -72,7 +72,7 @@ public class TttWindow {
         }
     }
 
-    public static TicTacToe.Player[] renderMainMenu()
+    public static void renderMainMenu()
     {
         // Declaring a Frame and Label
         Frame frame = new Frame("Tic-Tac-Toe main menu");
@@ -108,7 +108,8 @@ public class TttWindow {
                     playerO.getPlayerName()
                 );
 
-                System.out.println("Created players: " + players[0].getName() + " and " + players[1].getName());
+                System.out.println("Starting game: " + players[0].getName() + " vs " + players[1].getName());
+                TicTacToe.playGame(players[0], players[1]);
             }
         });
 
@@ -120,13 +121,9 @@ public class TttWindow {
                 System.exit(0);
             }
         });
-        
-        return TicTacToe.createPlayers(playerX.getPlayerName(), playerO.getPlayerName());
-
     };
     
     public static void main(String[] args){
-        TicTacToe.Player[] players = renderMainMenu();
-        System.out.println("Players ready: " + players[0].getName() + " vs " + players[1].getName());
+        renderMainMenu();
     };
 }

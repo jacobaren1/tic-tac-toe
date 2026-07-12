@@ -302,9 +302,6 @@ public class TicTacToe {
      * @param args optional command line arguments
      */
     public static void main(String[] args){
-        
-        Player[] players = TttWindow.renderMainMenu();
-        playGame(players[0], players[1]);
-
+        TttWindow.renderMainMenu();
     };
 };
