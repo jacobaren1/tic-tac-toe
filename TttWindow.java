@@ -9,12 +9,27 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 // Driver Class
 public class TttWindow {
     // main function
+
+    private static void bindEnterToButton(Button button) {
+        button.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent event) {
+                if (event.getKeyCode() == KeyEvent.VK_ENTER) {
+                    button.dispatchEvent(
+                        new ActionEvent(button, ActionEvent.ACTION_PERFORMED, "Enter")
+                    );
+                }
+            }
+        });
+    }
 
     private static class PlayerSection {
         private final char boardChar;
@@ -51,6 +66,7 @@ public class TttWindow {
 
             this.playerNameInput.addActionListener(actionListener);
             submitButton.addActionListener(actionListener);
+            bindEnterToButton(submitButton);
 
             inputHelp.setAlignment(Label.CENTER);
             this.showPlayerName.setAlignment(Label.CENTER);
@@ -84,6 +100,7 @@ public class TttWindow {
         Panel buttonPanel = new Panel(new FlowLayout(FlowLayout.CENTER));
 
         bStartGame.setPreferredSize(new Dimension(180, 30));
+        bindEnterToButton(bStartGame);
 
         playerX.render(playerPanel);
         playerO.render(playerPanel);
