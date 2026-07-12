@@ -9,7 +9,7 @@ public class TicTacToe {
     /**
      * Represents the board data structure for the TicTacToe game.
      */
-    private static class BoardMatrix{
+    public static class BoardMatrix{
 
         private int n; // no columns in matrix
         private char[][] rows;
@@ -182,7 +182,7 @@ public class TicTacToe {
     /**
      * Represents a player in the TicTacToe game.
      */
-    private static class Player{
+    public static class Player{
 
         private String name;
         private char boardChar; // X or O
@@ -240,45 +240,71 @@ public class TicTacToe {
             };
 
         };
+
+        /**
+         * Returns this player's display name.
+         *
+         * @return the player's name
+         */
+        public String getName() {
+            return this.name;
+        };
     };
-            
+
+    /**
+     * Creates a fresh game with two new players sharing the same board.
+     *
+     * @param playerXName the name for the X player
+     * @param playerOName the name for the O player
+     * @return a two-element array containing the new players
+     */
+    public static Player[] createPlayers(String playerXName, String playerOName){
+        BoardMatrix boardMatrix = new BoardMatrix(5, 5);
+        Player playerX = new Player(playerXName, 'X', boardMatrix, true);
+        Player playerO = new Player(playerOName, 'O', boardMatrix, false);
+
+        return new Player[] {playerX, playerO};
+    };
+
+    public static void playGame(Player playerX, Player playerO) {
+        BoardMatrix boardMatrix = playerX.board;
+
+        playerX.play(4,2, playerO);
+        playerO.play(4,1, playerX);
+
+        playerX.play(3,2, playerO);
+        playerO.play(4,1,playerX);
+        playerO.play(3,1,playerX);
+
+        playerX.play(2,2, playerO);
+        playerO.play(2,1,playerX);
+
+        playerX.play(1,2, playerO);
+        playerO.play(1,1,playerX);
+        
+        // Sneaky playerO
+        playerO.play(0,0, playerX);
+
+        if (!boardMatrix.fiveInARow){
+            playerX.play(0,2, playerO);
+        };
+
+        if (!boardMatrix.fiveInARow){
+            playerO.play(0,1,playerX);
+        };
+
+        System.out.println( boardMatrix );
+    };
+
     /**
      * Starts the TicTacToe game.
      *
      * @param args optional command line arguments
      */
     public static void main(String[] args){
-
-        BoardMatrix boardMatrix = new BoardMatrix(5, 5);
-
-        Player spiderman = new Player("Superman", 'X', boardMatrix, true);
-        Player batman = new Player("Batman", 'O', boardMatrix, false);
-
-        spiderman.play(4,2, batman);
-        batman.play(4,1, spiderman);
-
-        spiderman.play(3,2, batman);
-        batman.play(4,1,spiderman);
-        batman.play(3,1,spiderman);
-
-        spiderman.play(2,2, batman);
-        batman.play(2,1,spiderman);
-
-        spiderman.play(1,2, batman);
-        batman.play(1,1,spiderman);
         
-        // Sneaky batman
-        batman.play(0,0, spiderman);
-
-        if (!boardMatrix.fiveInARow){
-            spiderman.play(0,2, batman);
-        };
-
-        if (!boardMatrix.fiveInARow){
-            batman.play(0,1,spiderman);
-        };
-
-        System.out.println( boardMatrix );
+        Player[] players = TttWindow.renderMainMenu();
+        playGame(players[0], players[1]);
 
     };
 };
